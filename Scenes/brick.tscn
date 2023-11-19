@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://cid1mttkigkhf"]
+
+[ext_resource type="Script" path="res://Scripts/brick.gd" id="1_tit3n"]
+[ext_resource type="Texture2D" uid="uid://co3bdq1m4vg4f" path="res://Assets/Sprites/Brick.png" id="2_asrck"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hrcdt"]
+size = Vector2(16, 16)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3f1pw"]
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+particle_flag_disable_z = true
+direction = Vector3(1, 5, 0)
+spread = 180.0
+gravity = Vector3(0, 98, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 12.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+angle_min = -180.0
+angle_max = 180.0
+scale_min = 0.25
+scale_max = 0.25
+
+[node name="Brick" type="StaticBody2D"]
+collision_layer = 16
+collision_mask = 13
+script = ExtResource("1_tit3n")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_asrck")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hrcdt")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, -10)
+collision_mask = 4
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 4
+process_material = SubResource("ParticleProcessMaterial_3f1pw")
+texture = ExtResource("2_asrck")
+one_shot = true
+speed_scale = 2.0
+
+[connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]
